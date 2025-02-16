@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Time Slots</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #edeeeb;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .doctor-profile {
+            padding: 15px;
+            border-bottom: 1px solid #f715be;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .doctor-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .doctor-info div {
+            margin-right: 20px;
+        }
+
+        .doctor-info h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .doctor-info p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .doctor-schedule {
+            margin-top: 10px;
+        }
+
+        .doctor-schedule p {
+            margin: 5px 0;
+        }
+
+        .doctor-profile button {
+            padding: 8px 12px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: rgb(13, 231, 32);
+            border: none;
+            cursor: pointer;
+        }
+
+        .doctor-profile button:hover {
+            background-color: #0056b3;
+        }
+
+        nav {
+            background-color: #0052cc;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        nav ul li {
+            margin: 0;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            background-color: #003399;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/doctor">Doctors</a></li>
+            <li><a href="/appointment">Book an Appointment</a></li>
+            <li><a href="/emergency">Emergency Booking</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="/admin">Admin Dashboard</a></li>
+            <li><a href="/login">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>Available Slots by Doctors</h2>
+
+        <label for="Location">Select Location:</label>
+        <select id="location" onchange="filterByLocation()">
+            <option value="all">All Locations</option>
+            <option value="Pileru">Pileru</option>
+            <option value="Tirupathi">Tirupathi</option>
+            <option value="Benguluru">Benguluru</option>
+            <option value="Kadapa">Kadapa</option>
+            <option value="Ananthapur">Ananthapur</option>
+            <option value="Hyderabad">Hyderabad</option>
+        </select>
+
+        <label for="hospital">Select Hospital:</label>
+        <select id="hospital" onchange="filterByHospital()">
+            <option value="all">All Hospitals</option>
+        </select>
+
+        <label for="specialization">Select Specialization:</label>
+        <select id="specialization" onchange="filterBySpecialization()">
+            <option value="all">All Specializations</option>
+            <option value="Cardiologist">Cardiologist</option>
+            <option value="Dermatologist">Dermatologist</option>
+            <option value="Orthopedic Surgeon">Orthopedic Surgeon</option>
+        </select>
+
+        <div id="doctor-list"></div>
+    </div>
+
+    <script>
+        const doctors = [
+            {
+                name: "Dr. Tiru",
+                specialty: "Cardiologist",
+                hospital: "City Hospital",
+                location: "Pileru",
+                schedule: {
+                    Monday: ["9:00 AM - 10:00 AM", "10:00 AM - 11:00 AM", "11:00 AM - 12:00 PM"],
+                    Tuesday: ["9:00 AM - 10:00 AM", "11:00 AM - 12:00 PM"],
+                    Wednesday: ["10:00 AM - 12:00 PM"],
+                    Thursday: ["9:00 AM - 11:00 AM"],
+                    Friday: ["9:00 AM - 12:00 PM"]
+                }
+            },
+            {
+                name: "Dr. Nipun",
+                specialty: "Dermatologist",
+                hospital: "Health Clinic",
+                location: "Tirupathi",
+                schedule: {
+                    Monday: ["1:00 PM - 3:00 PM"],
+                    Wednesday: ["2:00 PM - 4:00 PM"],
+                    Friday: ["1:00 PM - 5:00 PM"]
+                }
+            },
+            {
+                name: "Dr. Mahesh",
+                specialty: "Orthopedic Surgeon",
+                hospital: "Care Hospital",
+                location: "Benguluru",
+                schedule: {
+                    Tuesday: ["10:00 AM - 1:00 PM"],
+                    Thursday: ["10:00 AM - 2:00 PM"],
+                    Saturday: ["9:00 AM - 12:00 PM"]
+                }
+            }
+        ];
+
+        function filterByLocation() {
+            const selectedLocation = document.getElementById("location").value;
+            const hospitalSelect = document.getElementById("hospital");
+
+            let hospitals = selectedLocation === 'all'
+                ? doctors.map(doctor => doctor.hospital)
+                : doctors.filter(doctor => doctor.location === selectedLocation).map(doctor => doctor.hospital);
+
+            hospitals = [...new Set(hospitals)];
+
+            hospitalSelect.innerHTML = `<option value="all">All Hospitals</option>`;
+            hospitals.forEach(hospital => {
+                hospitalSelect.innerHTML += `<option value="${hospital.toLowerCase().replace(/\s/g, "-")}">${hospital}</option>`;
+            });
+
+            filterByHospital();
+        }
+
+        function filterByHospital() {
+            const selectedHospital = document.getElementById("hospital").value;
+            const selectedLocation = document.getElementById("location").value;
+            const doctorList = document.getElementById("doctor-list");
+            doctorList.innerHTML = ''; 
+
+            const filteredDoctors = doctors.filter(doctor => {
+                const matchesHospital = selectedHospital === 'all' || doctor.hospital.toLowerCase().replace(/\s/g, "-") === selectedHospital;
+                const matchesLocation = selectedLocation === 'all' || doctor.location === selectedLocation;
+                return matchesHospital && matchesLocation;
+            });
+
+            if (filteredDoctors.length > 0) {
+                filteredDoctors.forEach(doctor => {
+                    let scheduleHTML = '';
+                    for (const [day, slots] of Object.entries(doctor.schedule)) {
+                        scheduleHTML += `<p><strong>${day}:</strong> ${slots.join(", ")}</p>`;
+                    }
+
+                    const doctorProfile = `
+                        <div class="doctor-profile">
+                            <div class="doctor-info">
+                                <div>
+                                    <h3>${doctor.name}</h3>
+                                    <p>Specialty: ${doctor.specialty}</p>
+                                    <p>Hospital: ${doctor.hospital}</p>
+                                    <p>Location: ${doctor.location}</p>
+                                </div>
+                                <div class="doctor-schedule">
+                                    ${scheduleHTML}
+                                </div>
+                            </div>
+                            <button onclick="bookAppointment('${doctor.name}')">Book Appointment</button>
+                        </div>
+                    `;
+                    doctorList.innerHTML += doctorProfile;
+                });
+            } else {
+                doctorList.innerHTML = `<p>No doctors available for the selected hospital and location.</p>`;
+            }
+        }
+
+        function bookAppointment(doctor) {
+            window.location.href = `appointment.html?doctor=${encodeURIComponent(doctor)}`;
+        }
+
+        filterByLocation();
+    </script>
+</body>
+</html>

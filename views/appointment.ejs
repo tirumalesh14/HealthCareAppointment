@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book an Appointment</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #0052cc;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        nav ul li {
+            margin: 0;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            background-color: #003399;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #0052cc;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="submit"],
+        select {
+            padding: 10px;
+            margin: 5px 0 15px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #0052cc;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #003399;
+        }
+
+        .hospital-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .hospital-info div {
+            flex: 1;
+        }
+
+        .hospital-info select {
+            width: 100%;
+        }
+
+        .notice {
+            color: red;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .timeslot {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/doctor">Doctors</a></li>
+            <li><a href="/appointment">Book an Appointment</a></li>
+            <li><a href="/emergency">Emergency Booking</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="/admin">Admin Dashboard</a></li>
+            <li><a href="/login">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>Book Your Appointment</h2>
+        <p class="notice">* All fields are required</p>
+        <form action="/api/appointments" method="POST">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" name="phone" placeholder="Enter your contact number" required>
+
+            <div class="hospital-info">
+                <div>
+                    <label for="doctor">Select Doctor:</label>
+                    <select id="doctor" name="doctor" required>
+                        <option value="">-- Select Doctor --</option>
+                        <option value="Dr. Tiru">Dr. Tiru (Cardiologist)</option>
+                        <option value="Dr. Nipun">Dr. Nipun (Dermatologist)</option>
+                        <option value="Dr. Mahesh">Dr. Mahesh (Orthopedic)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="location">Select Hospital Location:</label>
+                    <select id="location" name="location" required>
+                        <option value="">-- Select Location --</option>
+                        <option value="Pileru Hospital">Pileru Hospital</option>
+                        <option value="Tirupati Hospital">Tirupati Hospital</option>
+                        <option value="Kadapa Hospital">Kadapa Hospital</option>
+                        <option value="Kalikiri Hospital">Kalikiri Hospital</option>
+                    </select>
+                </div>
+            </div>
+
+            <label for="date">Appointment Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="timeslot">Available Time Slot:</label>
+            <select id="timeslot" name="timeslot" required>
+                <option value="">-- Select Time Slot --</option>
+            </select>
+
+            <label for="message">Additional Information:</label>
+            <textarea id="message" name="message" rows="4" placeholder="Provide any additional information or symptoms..." style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+
+            <input type="submit" value="Submit Appointment">
+        </form>
+    </div>
+
+    <script>
+        // Doctor schedule data
+        const doctors = {
+            "Dr. Tiru": {
+                Monday: ["9:00 AM - 10:00 AM", "10:00 AM - 11:00 AM", "11:00 AM - 12:00 PM"],
+                Tuesday: ["9:00 AM - 10:00 AM", "11:00 AM - 12:00 PM"],
+                Wednesday: ["10:00 AM - 12:00 PM"],
+                Thursday: ["9:00 AM - 11:00 AM"],
+                Friday: ["9:00 AM - 12:00 PM"]
+            },
+            "Dr. Nipun": {
+                Monday: ["1:00 PM - 3:00 PM"],
+                Wednesday: ["2:00 PM - 4:00 PM"],
+                Friday: ["1:00 PM - 5:00 PM"]
+            },
+            "Dr. Mahesh": {
+                Tuesday: ["10:00 AM - 1:00 PM"],
+                Thursday: ["10:00 AM - 2:00 PM"],
+                Saturday: ["9:00 AM - 12:00 PM"]
+            }
+        };
+
+        // Function to update the time slots based on the selected doctor and date
+        function updateTimeslots() {
+            const doctor = document.getElementById("doctor").value;
+            const date = new Date(document.getElementById("date").value);
+            const day = date.toLocaleString('en-US', { weekday: 'long' });
+            const timeslotSelect = document.getElementById("timeslot");
+
+            // Clear existing options
+            timeslotSelect.innerHTML = '<option value="">-- Select Time Slot --</option>';
+
+            if (doctors[doctor] && doctors[doctor][day]) {
+                // Add available timeslots
+                doctors[doctor][day].forEach(slot => {
+                    const option = document.createElement("option");
+                    option.value = slot;
+                    option.textContent = slot;
+                    timeslotSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Event listeners for doctor and date selection
+        document.getElementById("doctor").addEventListener("change", updateTimeslots);
+        document.getElementById("date").addEventListener("change", updateTimeslots);
+    </script>
+</body>
+
+</html>

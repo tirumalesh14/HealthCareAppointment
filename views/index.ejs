@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Appointment System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            background-image: url('/images/pexels-totalshape-2383010.jpg');
+            background-size: cover;
+            background-position:center;
+            background-repeat: no-repeat;
+            height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+        }
+        nav {
+            background-color: #0052cc;
+            padding: 10px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+}
+        h1{
+            margin:10rem;
+            top:10rem;
+        }
+        
+        p, button, h2 {
+            color: rgb(19, 19, 19);
+            text-align:end;
+            margin: 5rem;
+            top:5rem;
+            font-size: 1.4rem;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #080808;
+            color: rgb(253, 247, 247);
+            border: none;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+
+        button:hover {
+            background-color: #14f895;
+
+        }
+        nav {
+            background-color: #0052cc;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content:space-around;
+        }
+
+        nav ul li {
+            margin: 0;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            background-color: #003399;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/doctor">Doctors</a></li>
+            <li><a href="/appointment">Book an Appointment</a></li>
+            <li><a href="/emergency">Emergency Booking</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="/admin">Admin Dashboard</a></li>
+            <li><a href="/login">Login</a></li>
+        </ul>
+    </nav>
+    
+    <h1>Welcome to Our Healthcare System</h1>
+    <h2>We provide specialized healthcare services to meet your needs. Book an appointment with our experienced doctors today.</h2>
+    <button onclick="location.href='/appointment'">Book an Appointment</button>
+</body>
+</html>
